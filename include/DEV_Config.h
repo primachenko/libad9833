@@ -1,15 +1,32 @@
 #ifndef DEV_CONFIG_H
 #define DEV_CONFIG_H
 
+/*
+       Connection scheme
++--------------+
+|              |      +--------+
+|     RPi3     |      | AD9833 |
+|              |      |        |
+|         MOSI +------+ SDATA  |
+|         SCLK +------+ SCLK   |
+|        GPIO6 +------+ FSYNC  |
+|              |      |        |
+|              |      +--------+
+|              |
++--------------+
+*/
+
 #include <bcm2835.h>
 #include <stdint.h>
 #include <stdio.h>
 
 #ifdef USE_SOFT_SPI
-#define DEV_SCLK_PIN  (11)
-#define DEV_SDAT_PIN  (10)
+#define DEV_SCLK_PIN  (RPI_GPIO_P1_23)
+#define DEV_SDAT_PIN  (RPI_GPIO_P1_19)
 #endif /* USE_SOFT_SPI */
-#define DEV_CS_PIN (25)
+
+/* when used hardware SPI, CS pin need be NOT CS0 or CS1 */
+#define DEV_CS_PIN (RPI_GPIO_P1_22)
 
 #define DEV_Digital_Write(_pin, _value) bcm2835_gpio_write(_pin, _value)
 #define DEV_Digital_Read(_pin) bcm2835_gpio_lev(_pin)
